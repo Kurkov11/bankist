@@ -103,12 +103,10 @@ function checkDogs(dogsJulia, dogsKate) {
 }
 checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
 const myArr = [10, -4, 20];
-const addedZeros = myArr.map(function (current) {
-  return Number(`${current}0`);
-});
+const addedZeros = myArr.map(current => Number(`${current}0`));
 console.log(addedZeros);
-const addedZerosForOf = [];
-for (const current of myArr) {
-  addedZerosForOf.push(Number(`${current}0`));
-}
-console.log(addedZerosForOf);
+// const addedZerosForOf = [];
+// for (const current of myArr) {
+//   addedZerosForOf.push(Number(`${current}0`));
+// }
+// console.log(addedZerosForOf);
