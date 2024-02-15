@@ -154,6 +154,5 @@ const calcDisplayBalance = function (account) {
 calcDisplayBalance(account3);
 
 console.log(
-  movements.reduce((acc, curr) => (acc = curr > acc ? curr : acc)),
-  movements[0]
+  movements.reduce((acc, curr) => (curr > acc ? curr : acc), movements[0])
 );
