@@ -135,7 +135,5 @@ console.log(accounts);
 //   mov > 0 && depositsForOf.push(mov);
 // }
 
-const withdrawals = movements.filter(function (mov) {
-  if (mov < 0) return mov;
-});
+const withdrawals = movements.filter(mov => mov < 0);
 console.log(withdrawals);
