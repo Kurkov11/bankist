@@ -93,33 +93,20 @@ function displayMovements(movements) {
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 }
-displayMovements(movements);
 
 function checkDogs(dogsJulia, dogsKate) {
   const correctDogsJulia = dogsJulia.slice(1, -2);
   const allDogs = correctDogsJulia.concat(dogsKate);
   allDogs.forEach(function (dog, i) {
     const isAdult = dog >= 3;
-    console.log(
-      `Dog number ${i + 1} is ${
-        isAdult ? `an adult, and is ${dog} years old` : 'still a puppy 🐶'
-      }`
-    );
   });
 }
 checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
 const myArr = [10, -4, 20];
 const addedZeros = myArr.map(current => Number(`${current}0`));
-console.log(addedZeros);
-// const addedZerosForOf = [];
-// for (const current of myArr) {
-//   addedZerosForOf.push(Number(`${current}0`));
-// }
-// console.log(addedZerosForOf);
 const myFunc = () => {
   return 'curly braces inside arrow function. Neat, but when is it actually useful??';
 };
-console.log(myFunc());
 
 const createUsernames = function (accounts) {
   accounts.forEach(function (account) {
@@ -130,26 +117,6 @@ const createUsernames = function (accounts) {
   });
 };
 createUsernames(accounts);
-console.log(accounts);
-
-// const deposits = movements.filter(mov => mov > 0);
-// const depositsForEach = [];
-// movements.forEach(mov => mov > 0 && depositsForEach.push(mov));
-
-// const depositsForOf = [];
-// for (const mov of movements) {
-//   mov > 0 && depositsForOf.push(mov);
-// }
-
-// const withdrawals = movements.filter(mov => mov < 0);
-// console.log(withdrawals);
-
-// const balance = movements.reduce((acc, curr) => acc + curr, 0);
-// console.log(balance);
-
-// let sum = 0;
-// movements.forEach(mov => (sum += mov));
-// console.log(sum === balance);
 
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce(function (acc, curr) {
@@ -157,22 +124,22 @@ const calcDisplayBalance = function (movements) {
   }, 0);
   labelBalance.textContent = `${balance}€`;
 };
-const calcDisplaySummary = function (movements) {
-  const income = movements
+const calcDisplaySummary = function (account) {
+  const income = account.movements
     .filter(mov => mov > 0)
     .reduce((acc, curr) => acc + curr, 0);
   console.log(income);
   labelSumIn.textContent = income + '€';
 
-  const spending = movements
+  const spending = account.movements
     .filter(mov => mov < 0)
     .reduce((acc, curr) => acc + Math.abs(curr), 0);
   labelSumOut.textContent = spending + '€';
 
-  //Interest receives 1.5 percent of every deposit
-  const interest = movements
+  //Interest receives some percent of every deposit depending on the account
+  const interest = account.movements
     .filter(mov => mov > 0)
-    .map(deposit => deposit * (1.5 / 100))
+    .map(deposit => deposit * (account.interestRate / 100))
     .filter(interest => interest >= 1)
     .reduce((totalInterest, interest) => totalInterest + interest, 0);
   labelSumInterest.textContent = interest + '€';
@@ -181,6 +148,11 @@ const calcDisplaySummary = function (movements) {
 let currentAccount;
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
+
+  //Lose input focus - even when data was incorrect
+  inputLoginUsername.blur();
+  inputLoginPin.blur();
+
   currentAccount = accounts.find(account => {
     // account.username === inputLoginUsername.value &&
     return account.username === inputLoginUsername.value;
@@ -197,6 +169,10 @@ btnLogin.addEventListener('click', function (e) {
     calcDisplayBalance(currentAccount.movements);
 
     //Display summary
-    calcDisplaySummary(currentAccount.movements);
+    calcDisplaySummary(currentAccount, currentAccount);
+    console.log(currentAccount.interestRate + 'Interest');
+
+    //Empty inputs
+    inputLoginUsername.value = inputLoginPin.value = '';
   }
 });
