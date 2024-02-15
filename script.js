@@ -166,8 +166,25 @@ const calcDisplayBalance = function (account) {
   }, 0);
   labelBalance.textContent = `${balance}€`;
 };
-calcDisplayBalance(account3);
+calcDisplayBalance(account1);
+const calcDisplaySummary = function (account) {
+  const income = account.movements
+    .filter(mov => mov > 0)
+    .reduce((acc, curr) => acc + curr, 0);
+  console.log(income);
+  labelSumIn.textContent = income + '€';
 
-console.log(
-  movements.reduce((acc, curr) => (curr > acc ? curr : acc), movements[0])
-);
+  const spending = account.movements
+    .filter(mov => mov < 0)
+    .reduce((acc, curr) => acc + Math.abs(curr), 0);
+  labelSumOut.textContent = spending + '€';
+
+  //Interest receives 1.5 percent of every deposit
+  const interest = account.movements
+    .filter(mov => mov > 0)
+    .map(deposit => deposit * (1.5 / 100))
+    .filter(interest => interest >= 1)
+    .reduce((totalInterest, interest) => totalInterest + interest, 0);
+  labelSumInterest.textContent = interest + '€';
+};
+calcDisplaySummary(account1);
