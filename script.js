@@ -125,3 +125,5 @@ const createUsernames = function (accounts) {
 };
 createUsernames(accounts);
 console.log(accounts);
+
+const deposits = movements.filter(mov => mov > 0);
