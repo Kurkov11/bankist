@@ -107,3 +107,8 @@ const addedZeros = myArr.map(function (current) {
   return Number(`${current}0`);
 });
 console.log(addedZeros);
+const addedZerosForOf = [];
+for (const current of myArr) {
+  addedZerosForOf.push(Number(`${current}0`));
+}
+console.log(addedZerosForOf);
