@@ -115,8 +115,11 @@ const myFunc = () => {
 };
 console.log(myFunc());
 
-const user = 'Maria Sklodovska Curie';
-const username = user
-  .split(' ')
-  .map(curr => curr[0].toLowerCase())
-  .join('');
+const createUsernames = function (user) {
+  const username = user
+    .split(' ')
+    .map(curr => curr[0].toLowerCase())
+    .join('');
+  return username;
+};
+console.log(createUsernames('Maria Sklodovska Curie'));
