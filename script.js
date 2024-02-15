@@ -179,3 +179,16 @@ const calcDisplaySummary = function (account) {
   labelSumInterest.textContent = interest + '€';
 };
 calcDisplaySummary(account1);
+
+const enteredUsername = prompt('Enter username');
+const enteredPin = prompt('Enter pin');
+const searchedUser = accounts.find(account => {
+  return (
+    account.username === enteredUsername && account.pin === Number(enteredPin)
+  );
+});
+console.log(
+  searchedUser
+    ? `Welcome ${searchedUser.owner.split(' ')[0]}!`
+    : 'Wrong username or password'
+);
