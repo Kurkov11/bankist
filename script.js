@@ -1,20 +1,11 @@
 'use strict';
 
 // DOGS
-function calcAverageHumanAge(ages) {
-  const humanAges = ages.map(function (age) {
-    return age <= 2 ? 2 * age : 16 + age * 4;
-  });
-
-  const adults = humanAges.filter(age => age >= 18);
-
-  const average =
-    adults.reduce(function (acc, curr) {
-      return acc + curr;
-    }, 0) / adults.length;
-
-  return average;
-}
+const calcAverageHumanAge = ages =>
+  ages
+    .map(age => (age <= 2 ? 2 * age : 16 + age * 4))
+    .filter(age => age >= 18)
+    .reduce((acc, curr, i, arr) => acc + curr / arr.length, 0);
 console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
 
 // BANKIST APP
