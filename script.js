@@ -110,3 +110,7 @@ console.log(addedZeros);
 //   addedZerosForOf.push(Number(`${current}0`));
 // }
 // console.log(addedZerosForOf);
+const myFunc = () => {
+  return 'curly braces inside arrow function. Neat, but when is it actually useful??';
+};
+console.log(myFunc());
