@@ -1,7 +1,23 @@
 'use strict';
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
+// DOGS
+function calcAverageHumanAge(ages) {
+  let numberOfAdultAges = 0;
+  return (
+    ages
+      .map(function (age) {
+        return age <= 2 ? 2 * age : 16 + age * 4;
+      })
+      .filter(age => age >= 18)
+      .reduce(function (acc, curr) {
+        // 4, 36, 48, 32
+        numberOfAdultAges++;
+        return acc + curr;
+      }, 0) / numberOfAdultAges
+  );
+}
+console.log(calcAverageHumanAge([2, 5, 8, 4]));
+
 // BANKIST APP
 
 // Data
