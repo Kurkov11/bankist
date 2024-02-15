@@ -152,3 +152,5 @@ const calcDisplayBalance = function (account) {
   labelBalance.textContent = `${balance}€`;
 };
 calcDisplayBalance(account3);
+
+console.log(movements.reduce((acc, curr) => (acc = curr > acc ? curr : acc)));
