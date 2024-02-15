@@ -115,11 +115,13 @@ const myFunc = () => {
 };
 console.log(myFunc());
 
-const createUsernames = function (user) {
-  const username = user
-    .split(' ')
-    .map(curr => curr[0].toLowerCase())
-    .join('');
-  return username;
+const createUsernames = function (accounts) {
+  accounts.forEach(function (account) {
+    account.username = account.owner
+      .split(' ')
+      .map(curr => curr[0].toLowerCase())
+      .join('');
+  });
 };
-console.log(createUsernames('Maria Sklodovska Curie'));
+createUsernames(accounts);
+console.log(accounts);
