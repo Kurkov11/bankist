@@ -126,12 +126,16 @@ const createUsernames = function (accounts) {
 createUsernames(accounts);
 console.log(accounts);
 
-const deposits = movements.filter(mov => mov > 0);
-const depositsForEach = [];
-movements.forEach(mov => mov > 0 && depositsForEach.push(mov));
+// const deposits = movements.filter(mov => mov > 0);
+// const depositsForEach = [];
+// movements.forEach(mov => mov > 0 && depositsForEach.push(mov));
 
-const depositsForOf = [];
-for (const mov of movements) {
-  mov > 0 && depositsForOf.push(mov);
-}
-console.log(depositsForOf);
+// const depositsForOf = [];
+// for (const mov of movements) {
+//   mov > 0 && depositsForOf.push(mov);
+// }
+
+const withdrawals = movements.filter(function (mov) {
+  if (mov < 0) return mov;
+});
+console.log(withdrawals);
