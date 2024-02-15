@@ -151,44 +151,52 @@ console.log(accounts);
 // movements.forEach(mov => (sum += mov));
 // console.log(sum === balance);
 
-const calcDisplayBalance = function (account) {
-  const balance = account.movements.reduce(function (acc, curr) {
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce(function (acc, curr) {
     return acc + curr;
   }, 0);
   labelBalance.textContent = `${balance}€`;
 };
-calcDisplayBalance(account1);
-const calcDisplaySummary = function (account) {
-  const income = account.movements
+const calcDisplaySummary = function (movements) {
+  const income = movements
     .filter(mov => mov > 0)
     .reduce((acc, curr) => acc + curr, 0);
   console.log(income);
   labelSumIn.textContent = income + '€';
 
-  const spending = account.movements
+  const spending = movements
     .filter(mov => mov < 0)
     .reduce((acc, curr) => acc + Math.abs(curr), 0);
   labelSumOut.textContent = spending + '€';
 
   //Interest receives 1.5 percent of every deposit
-  const interest = account.movements
+  const interest = movements
     .filter(mov => mov > 0)
     .map(deposit => deposit * (1.5 / 100))
     .filter(interest => interest >= 1)
     .reduce((totalInterest, interest) => totalInterest + interest, 0);
   labelSumInterest.textContent = interest + '€';
 };
-calcDisplaySummary(account1);
 
-const enteredUsername = prompt('Enter username');
-const enteredPin = prompt('Enter pin');
-const searchedUser = accounts.find(account => {
-  return (
-    account.username === enteredUsername && account.pin === Number(enteredPin)
-  );
+let currentAccount;
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault();
+  currentAccount = accounts.find(account => {
+    // account.username === inputLoginUsername.value &&
+    return account.username === inputLoginUsername.value;
+  });
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    //Display UI and message
+    labelWelcome.textContent = `Hello ${currentAccount.owner.split(' ')[0]}`;
+    containerApp.style.opacity = 100;
+
+    //Display movement
+    displayMovements(currentAccount.movements);
+
+    //Display balance
+    calcDisplayBalance(currentAccount.movements);
+
+    //Display summary
+    calcDisplaySummary(currentAccount.movements);
+  }
 });
-console.log(
-  searchedUser
-    ? `Welcome ${searchedUser.owner.split(' ')[0]}!`
-    : 'Wrong username or password'
-);
