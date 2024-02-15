@@ -91,7 +91,7 @@ displayMovements(movements);
 
 function checkDogs(dogsJulia, dogsKate) {
   const correctDogsJulia = dogsJulia.slice(1, -2);
-  const allDogs = [...correctDogsJulia, ...dogsKate];
+  const allDogs = correctDogsJulia.concat(dogsKate);
   allDogs.forEach(function (dog, i) {
     const isAdult = dog >= 3;
     console.log(
