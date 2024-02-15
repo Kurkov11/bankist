@@ -127,3 +127,6 @@ createUsernames(accounts);
 console.log(accounts);
 
 const deposits = movements.filter(mov => mov > 0);
+const depositsForEach = [];
+movements.forEach(mov => mov > 0 && depositsForEach.push(mov));
+console.log(depositsForEach);
