@@ -138,11 +138,17 @@ console.log(accounts);
 // const withdrawals = movements.filter(mov => mov < 0);
 // console.log(withdrawals);
 
-const balance = movements.reduce(function (acc, curr, i) {
-  return acc + curr;
-}, 0);
-console.log(balance);
+// const balance = movements.reduce((acc, curr) => acc + curr, 0);
+// console.log(balance);
 
-let sum = 0;
-movements.forEach(mov => (sum += mov));
-console.log(sum === balance);
+// let sum = 0;
+// movements.forEach(mov => (sum += mov));
+// console.log(sum === balance);
+
+const calcDisplayBalance = function (account) {
+  const balance = account.movements.reduce(function (acc, curr) {
+    return acc + curr;
+  }, 0);
+  labelBalance.textContent = `${balance}€`;
+};
+calcDisplayBalance(account3);
