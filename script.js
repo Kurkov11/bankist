@@ -114,3 +114,9 @@ const myFunc = () => {
   return 'curly braces inside arrow function. Neat, but when is it actually useful??';
 };
 console.log(myFunc());
+
+const user = 'Maria Sklodovska Curie';
+const username = user
+  .split(' ')
+  .map(curr => curr[0].toLowerCase())
+  .join('');
