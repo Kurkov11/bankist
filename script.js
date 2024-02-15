@@ -135,5 +135,14 @@ console.log(accounts);
 //   mov > 0 && depositsForOf.push(mov);
 // }
 
-const withdrawals = movements.filter(mov => mov < 0);
-console.log(withdrawals);
+// const withdrawals = movements.filter(mov => mov < 0);
+// console.log(withdrawals);
+
+const balance = movements.reduce(function (acc, curr, i) {
+  return acc + curr;
+}, 0);
+console.log(balance);
+
+let sum = 0;
+movements.forEach(mov => (sum += mov));
+console.log(sum === balance);
