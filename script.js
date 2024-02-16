@@ -214,7 +214,11 @@ btnClose.addEventListener('click', e => {
   });
   if (closedUser) {
     inputCloseUsername.value = inputClosePin.value = '';
-    closedUser && accounts.splice(accounts.indexOf(closedUser), 1);
+    closedUser &&
+      accounts.splice(
+        accounts.findIndex(user => user === closedUser),
+        1
+      );
     containerApp.style.opacity = 0;
     labelWelcome.textContent = 'Log in to get started';
   }
