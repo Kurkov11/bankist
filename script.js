@@ -143,7 +143,7 @@ const calcDisplaySummary = function (account) {
 };
 
 let currentAccount;
-function updateMoneyUI(account) {
+function updateUI(account) {
   //Display movement
   displayMovements(account);
 
@@ -152,6 +152,9 @@ function updateMoneyUI(account) {
 
   //Display summary
   calcDisplaySummary(account);
+
+  //Display welcome message
+  labelWelcome.textContent = `Hello ${account.owner.split(' ')[0]}`;
 }
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
@@ -169,7 +172,7 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Hello ${currentAccount.owner.split(' ')[0]}`;
     containerApp.style.opacity = 100;
 
-    updateMoneyUI(currentAccount);
+    updateUI(currentAccount);
 
     console.log(currentAccount.interestRate + 'Interest');
 
@@ -197,7 +200,7 @@ btnTransfer.addEventListener('click', function (e) {
     receiverAccount.movements.push(amount);
     currentAccount.movements.push(-1 * amount);
 
-    updateMoneyUI(currentAccount);
+    updateUI(currentAccount);
 
     inputTransferAmount.value = inputTransferTo.value = '';
   }
@@ -231,7 +234,21 @@ btnLoan.addEventListener('click', e => {
     currentAccount.movements.some(deposit => deposit >= 0.1 * amount)
   ) {
     currentAccount.movements.push(amount);
-    updateMoneyUI(currentAccount);
+    updateUI(currentAccount);
     inputLoanAmount.value = '';
   }
 });
+
+// const enteredPW = prompt('Enter password');
+// const enteredUN = prompt('Enter username');
+
+// const searchedAccount = accounts.find(account => {
+//   return account.username === enteredUN && account.pin === Number(enteredPW);
+// });
+
+// if (searchedAccount) {
+//   updateUI(searchedAccount);
+//   containerApp.style.opacity = 100;
+//   currentAccount = searchedAccount;
+// }
+// console.log(searchedAccount);
