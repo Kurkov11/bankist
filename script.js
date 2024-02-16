@@ -190,7 +190,7 @@ btnTransfer.addEventListener('click', function (e) {
   //Was the account found? Isn't it the current account? Is the amount value positive? Is there enough money?
   if (
     receiverAccount &&
-    receiverAccount != currentAccount &&
+    receiverAccount !== currentAccount &&
     amount > 0 &&
     currentAccount.balance >= amount
   ) {
