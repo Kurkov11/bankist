@@ -203,7 +203,6 @@ btnTransfer.addEventListener('click', function (e) {
 
     updateMoneyUI(currentAccount);
 
-    inputTransferAmount.value = '';
-    inputTransferTo.value = '';
+    inputTransferAmount.value = inputTransferTo.value = '';
   }
 });
