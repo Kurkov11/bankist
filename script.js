@@ -118,11 +118,11 @@ const createUsernames = function (accounts) {
 };
 createUsernames(accounts);
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce(function (acc, curr) {
+const calcDisplayBalance = function (account) {
+  const balance = account.movements.reduce(function (acc, curr) {
     return acc + curr;
   }, 0);
-  currentAccount.balance = balance;
+  account.balance = balance;
   labelBalance.textContent = `${balance}€`;
 };
 const calcDisplaySummary = function (account) {
@@ -167,7 +167,7 @@ btnLogin.addEventListener('click', function (e) {
     displayMovements(currentAccount.movements);
 
     //Display balance
-    calcDisplayBalance(currentAccount.movements);
+    calcDisplayBalance(currentAccount);
 
     //Display summary
     calcDisplaySummary(currentAccount, currentAccount);
@@ -199,7 +199,7 @@ btnTransfer.addEventListener('click', function (e) {
 
     displayMovements(currentAccount.movements);
 
-    calcDisplayBalance(currentAccount.movements);
+    calcDisplayBalance(currentAccount);
 
     calcDisplaySummary(currentAccount, currentAccount);
 
