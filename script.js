@@ -8,6 +8,20 @@ const calcAverageHumanAge = ages =>
     .reduce((acc, curr, i, arr) => acc + curr / arr.length, 0);
 console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
 
+function checkDogs(dogsJulia, dogsKate) {
+  const correctDogsJulia = dogsJulia.slice(1, -2);
+  const allDogs = correctDogsJulia.concat(dogsKate);
+  allDogs.forEach(function (dog, i) {
+    const isAdult = dog >= 3;
+  });
+}
+checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
+const myArr = [10, -4, 20];
+const addedZeros = myArr.map(current => Number(`${current}0`));
+const myFunc = () => {
+  return 'curly braces inside arrow function. Neat, but when is it actually useful??';
+};
+
 // BANKIST APP
 
 // Data
@@ -94,20 +108,6 @@ function displayMovements(movements) {
   });
 }
 
-function checkDogs(dogsJulia, dogsKate) {
-  const correctDogsJulia = dogsJulia.slice(1, -2);
-  const allDogs = correctDogsJulia.concat(dogsKate);
-  allDogs.forEach(function (dog, i) {
-    const isAdult = dog >= 3;
-  });
-}
-checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
-const myArr = [10, -4, 20];
-const addedZeros = myArr.map(current => Number(`${current}0`));
-const myFunc = () => {
-  return 'curly braces inside arrow function. Neat, but when is it actually useful??';
-};
-
 const createUsernames = function (accounts) {
   accounts.forEach(function (account) {
     account.username = account.owner
@@ -174,5 +174,30 @@ btnLogin.addEventListener('click', function (e) {
 
     //Empty inputs
     inputLoginUsername.value = inputLoginPin.value = '';
+  }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const transferTo = inputTransferTo.value;
+  console.log(amount + '€', transferTo);
+  const receiverAccount = accounts.find(function (account) {
+    return account.username === transferTo;
+  });
+
+  //Was the account found? If so isn't it the current account?
+  if (receiverAccount && receiverAccount != currentAccount) {
+    receiverAccount.movements.push(amount);
+    currentAccount.movements.push(-1 * amount);
+
+    displayMovements(currentAccount.movements);
+
+    calcDisplayBalance(currentAccount.movements);
+
+    calcDisplaySummary(currentAccount, currentAccount);
+
+    inputTransferAmount.value = '';
+    inputTransferTo.value = '';
   }
 });
