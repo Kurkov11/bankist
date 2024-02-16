@@ -122,6 +122,7 @@ const calcDisplayBalance = function (movements) {
   const balance = movements.reduce(function (acc, curr) {
     return acc + curr;
   }, 0);
+  currentAccount.balance = balance;
   labelBalance.textContent = `${balance}€`;
 };
 const calcDisplaySummary = function (account) {
@@ -186,8 +187,13 @@ btnTransfer.addEventListener('click', function (e) {
     return account.username === transferTo;
   });
 
-  //Was the account found? If so isn't it the current account?
-  if (receiverAccount && receiverAccount != currentAccount) {
+  //Was the account found? Isn't it the current account? Is the amount value positive? Is there enough money?
+  if (
+    receiverAccount &&
+    receiverAccount != currentAccount &&
+    amount > 0 &&
+    currentAccount.balance >= amount
+  ) {
     receiverAccount.movements.push(amount);
     currentAccount.movements.push(-1 * amount);
 
