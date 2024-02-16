@@ -147,7 +147,7 @@ const calcDisplaySummary = function (account) {
 };
 
 let currentAccount;
-function updateMoneyValues(account) {
+function updateMoneyUI(account) {
   //Display movement
   displayMovements(account);
 
@@ -173,7 +173,7 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Hello ${currentAccount.owner.split(' ')[0]}`;
     containerApp.style.opacity = 100;
 
-    updateMoneyValues(currentAccount);
+    updateMoneyUI(currentAccount);
 
     console.log(currentAccount.interestRate + 'Interest');
 
@@ -201,7 +201,7 @@ btnTransfer.addEventListener('click', function (e) {
     receiverAccount.movements.push(amount);
     currentAccount.movements.push(-1 * amount);
 
-    updateMoneyValues(currentAccount);
+    updateMoneyUI(currentAccount);
 
     inputTransferAmount.value = '';
     inputTransferTo.value = '';
