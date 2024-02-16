@@ -94,9 +94,9 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
-function displayMovements(movements) {
+function displayMovements(account) {
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+  account.movements.forEach(function (mov, i) {
     const type = mov >= 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
       <div class="movements__type movements__type--${type}">${
@@ -147,6 +147,16 @@ const calcDisplaySummary = function (account) {
 };
 
 let currentAccount;
+function updateMoneyValues(account) {
+  //Display movement
+  displayMovements(account);
+
+  //Display balance
+  calcDisplayBalance(account);
+
+  //Display summary
+  calcDisplaySummary(account);
+}
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -163,14 +173,8 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Hello ${currentAccount.owner.split(' ')[0]}`;
     containerApp.style.opacity = 100;
 
-    //Display movement
-    displayMovements(currentAccount.movements);
+    updateMoneyValues(currentAccount);
 
-    //Display balance
-    calcDisplayBalance(currentAccount);
-
-    //Display summary
-    calcDisplaySummary(currentAccount, currentAccount);
     console.log(currentAccount.interestRate + 'Interest');
 
     //Empty inputs
@@ -197,11 +201,7 @@ btnTransfer.addEventListener('click', function (e) {
     receiverAccount.movements.push(amount);
     currentAccount.movements.push(-1 * amount);
 
-    displayMovements(currentAccount.movements);
-
-    calcDisplayBalance(currentAccount);
-
-    calcDisplaySummary(currentAccount, currentAccount);
+    updateMoneyValues(currentAccount);
 
     inputTransferAmount.value = '';
     inputTransferTo.value = '';
