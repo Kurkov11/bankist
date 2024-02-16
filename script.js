@@ -81,10 +81,6 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
-
 const currencies = new Map([
   ['USD', 'United States dollar'],
   ['EUR', 'Euro'],
@@ -204,5 +200,22 @@ btnTransfer.addEventListener('click', function (e) {
     updateMoneyUI(currentAccount);
 
     inputTransferAmount.value = inputTransferTo.value = '';
+  }
+});
+
+btnClose.addEventListener('click', e => {
+  e.preventDefault();
+  const closedUser = accounts.find(function (account) {
+    return (
+      account === currentAccount &&
+      account.username === inputCloseUsername.value &&
+      account.pin === Number(inputClosePin.value)
+    );
+  });
+  if (closedUser) {
+    inputCloseUsername.value = inputClosePin.value = '';
+    closedUser && accounts.splice(accounts.indexOf(closedUser), 1);
+    containerApp.style.opacity = 0;
+    labelWelcome.textContent = 'Log in to get started';
   }
 });
