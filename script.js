@@ -223,3 +223,15 @@ btnClose.addEventListener('click', e => {
     labelWelcome.textContent = 'Log in to get started';
   }
 });
+btnLoan.addEventListener('click', e => {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (
+    amount > 0 &&
+    currentAccount.movements.some(deposit => deposit >= 0.1 * amount)
+  ) {
+    currentAccount.movements.push(amount);
+    updateMoneyUI(currentAccount);
+    inputLoanAmount.value = '';
+  }
+});
