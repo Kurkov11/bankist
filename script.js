@@ -289,3 +289,36 @@ const { deposits, withdrawals } = accounts
     { deposits: 0, withdrawals: 0 }
   );
 console.log(deposits);
+
+// 4. Capitalise with exceptions
+const convertTitle = function (sentence) {
+  const capitalise = word => word[0].toUpperCase() + word.slice(1);
+  const exceptions = [
+    'a',
+    'an',
+    'and',
+    'as',
+    'at',
+    'but',
+    'by',
+    'for',
+    'in',
+    'nor',
+    'of',
+    'on',
+    'or',
+    'the',
+    'up',
+  ];
+  return capitalise(
+    sentence
+      .split(' ')
+      .map(word =>
+        !exceptions.includes(word.toLowerCase()) ? capitalise(word) : word
+      )
+      .join(' ')
+  );
+};
+console.log(
+  convertTitle("but we don't have any butter in the fridge at home, John")
+);
