@@ -1,26 +1,26 @@
 'use strict';
 
 // DOGS
-const calcAverageHumanAge = ages =>
-  ages
-    .map(age => (age <= 2 ? 2 * age : 16 + age * 4))
-    .filter(age => age >= 18)
-    .reduce((acc, curr, i, arr) => acc + curr / arr.length, 0);
-console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
+// const calcAverageHumanAge = ages =>
+//   ages
+//     .map(age => (age <= 2 ? 2 * age : 16 + age * 4))
+//     .filter(age => age >= 18)
+//     .reduce((acc, curr, i, arr) => acc + curr / arr.length, 0);
+// console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
 
-function checkDogs(dogsJulia, dogsKate) {
-  const correctDogsJulia = dogsJulia.slice(1, -2);
-  const allDogs = correctDogsJulia.concat(dogsKate);
-  allDogs.forEach(function (dog, i) {
-    const isAdult = dog >= 3;
-  });
-}
-checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
-const myArr = [10, -4, 20];
-const addedZeros = myArr.map(current => Number(`${current}0`));
-const myFunc = () => {
-  return 'curly braces inside arrow function. Neat, but when is it actually useful??';
-};
+// function checkDogs(dogsJulia, dogsKate) {
+//   const correctDogsJulia = dogsJulia.slice(1, -2);
+//   const allDogs = correctDogsJulia.concat(dogsKate);
+//   allDogs.forEach(function (dog, i) {
+//     const isAdult = dog >= 3;
+//   });
+// }
+// checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
+// const myArr = [10, -4, 20];
+// const addedZeros = myArr.map(current => Number(`${current}0`));
+// const myFunc = () => {
+//   return 'curly braces inside arrow function. Neat, but when is it actually useful??';
+// };
 
 // BANKIST APP
 
@@ -239,21 +239,7 @@ btnLoan.addEventListener('click', e => {
   }
 });
 
-// const enteredPW = prompt('Enter password');
-// const enteredUN = prompt('Enter username');
-
-// const searchedAccount = accounts.find(account => {
-//   return account.username === enteredUN && account.pin === Number(enteredPW);
-// });
-
-// if (searchedAccount) {
-//   updateUI(searchedAccount);
-//   containerApp.style.opacity = 100;
-//   currentAccount = searchedAccount;
-// }
-// console.log(searchedAccount);
-const deposit = function (mov) {
-  return mov > 0;
-};
-console.log(movements.some(deposit));
-console.log(movements.every(deposit));
+const overallBalance = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, val) => acc + val, 0);
+console.log(overallBalance);
