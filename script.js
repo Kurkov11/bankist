@@ -330,17 +330,17 @@ const dogs = [
   { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
   { weight: 32, curFood: 340, owners: ['Michael'] },
 ];
+// 1.
 dogs.forEach(function (dog) {
-  dog.recommendedFood = dog.weight ** 0.75 * 28;
+  dog.recommendedFood = Math.trunc(dog.weight ** 0.75 * 28);
 });
-dogs.forEach(dog => {
-  if (dog.owners.includes('Sarah'))
-    console.log(
-      "Sarah's dog is " +
-        (dog.curFood >= dog.recommendedFood ? 'not ' : '') +
-        'eating enough'
-    );
+// 2.
+const dogSarah = dogs.find(dog => {
+  return dog.owners.includes('Sarah');
 });
+if (dogSarah.curFood >= dogSarah?.recommendedFood)
+  console.log("Sarah's dog is eating enough");
+// 3.
 const ownersEatTooLittle = dogs
   .filter(dog => {
     return dog.curFood < dog.recommendedFood;
@@ -355,33 +355,22 @@ const ownersEatTooMuch = dogs
 
 console.log(ownersEatTooLittle);
 console.log(ownersEatTooMuch);
-
-const ownersEatTooLittleString = ownersEatTooLittle.reduce(
-  (sentence, owner, _, arr) => {
-    return `${sentence}${owner !== arr[0] ? ` and ` : ''}${owner}${
-      owner === arr[arr.length - 1] ? "'s dogs eat too little!" : ''
-    }`;
-  },
-  ''
-);
-const ownersEatTooMuchString = ownersEatTooMuch.reduce(
-  (sentence, owner, _, arr) => {
-    return `${sentence}${owner !== arr[0] ? ` and ` : ''}${owner}${
-      owner === arr[arr.length - 1] ? "'s dogs eat too much!" : ''
-    }`;
-  },
-  ''
-);
+// 4.
+const ownersEatTooLittleString =
+  ownersEatTooLittle.join(' and ') + "'s dogs eat too little!";
+const ownersEatTooMuchString =
+  ownersEatTooMuch.join(' and ') + "'s dogs eat too much!";
 console.log(ownersEatTooLittleString);
 console.log(ownersEatTooMuchString);
+// 5.
 console.log(
   'Are there any dogs eating exactly the recommended amount of food? ' +
     dogs.some(dog => dog.recommendedFood === dog.curFood)
 );
 const foodAmountOk = function (dog) {
   return (
-    dog.curFood >= dog.recommendedFood - dog.recommendedFood * 0.1 &&
-    dog.curFood <= dog.recommendedFood + dog.recommendedFood * 0.1
+    dog.curFood >= dog.recommendedFood - dog.recommendedFood * 0.9 &&
+    dog.curFood <= dog.recommendedFood * 1.1
   );
 };
 console.log(
@@ -390,8 +379,7 @@ console.log(
 const okEatingDogs = dogs.filter(foodAmountOk);
 console.log(okEatingDogs);
 
-const dogsRecomSorted = dogs.slice();
-dogsRecomSorted.sort((cur, next) => {
+const dogsRecomSorted = dogs.slice().sort((cur, next) => {
   return cur.recommendedFood - next.recommendedFood;
 });
 console.log(dogsRecomSorted);
