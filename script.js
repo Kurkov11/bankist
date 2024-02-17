@@ -251,6 +251,6 @@ console.log(movsAscend);
 
 let sort = false;
 btnSort.addEventListener('click', function () {
-  sort = sort ? false : true;
+  sort = !sort;
   displayMovements(currentAccount, sort);
 });
