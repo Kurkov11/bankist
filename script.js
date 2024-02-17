@@ -322,3 +322,76 @@ const convertTitle = function (sentence) {
 console.log(
   convertTitle("but we don't have any butter in the fridge at home, John")
 );
+
+//Coding challenge #4
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] },
+];
+dogs.forEach(function (dog) {
+  dog.recommendedFood = dog.weight ** 0.75 * 28;
+});
+dogs.forEach(dog => {
+  if (dog.owners.includes('Sarah'))
+    console.log(
+      "Sarah's dog is " +
+        (dog.curFood >= dog.recommendedFood ? 'not ' : '') +
+        'eating enough'
+    );
+});
+const ownersEatTooLittle = dogs
+  .filter(dog => {
+    return dog.curFood < dog.recommendedFood;
+  })
+  .flatMap(starvingDog => starvingDog.owners);
+
+const ownersEatTooMuch = dogs
+  .filter(dog => {
+    return dog.curFood > dog.recommendedFood;
+  })
+  .flatMap(overweightDog => overweightDog.owners);
+
+console.log(ownersEatTooLittle);
+console.log(ownersEatTooMuch);
+
+const ownersEatTooLittleString = ownersEatTooLittle.reduce(
+  (sentence, owner, _, arr) => {
+    return `${sentence}${owner !== arr[0] ? ` and ` : ''}${owner}${
+      owner === arr[arr.length - 1] ? "'s dogs eat too little!" : ''
+    }`;
+  },
+  ''
+);
+const ownersEatTooMuchString = ownersEatTooMuch.reduce(
+  (sentence, owner, _, arr) => {
+    return `${sentence}${owner !== arr[0] ? ` and ` : ''}${owner}${
+      owner === arr[arr.length - 1] ? "'s dogs eat too much!" : ''
+    }`;
+  },
+  ''
+);
+console.log(ownersEatTooLittleString);
+console.log(ownersEatTooMuchString);
+console.log(
+  'Are there any dogs eating exactly the recommended amount of food? ' +
+    dogs.some(dog => dog.recommendedFood === dog.curFood)
+);
+const foodAmountOk = function (dog) {
+  return (
+    dog.curFood >= dog.recommendedFood - dog.recommendedFood * 0.1 &&
+    dog.curFood <= dog.recommendedFood + dog.recommendedFood * 0.1
+  );
+};
+console.log(
+  'Are there any dogs eating the ok amount of food? ' + dogs.some(foodAmountOk)
+);
+const okEatingDogs = dogs.filter(foodAmountOk);
+console.log(okEatingDogs);
+
+const dogsRecomSorted = dogs.slice();
+dogsRecomSorted.sort((cur, next) => {
+  return cur.recommendedFood - next.recommendedFood;
+});
+console.log(dogsRecomSorted);
