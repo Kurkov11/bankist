@@ -277,3 +277,15 @@ const depositsOver1000Reduce = accounts.reduce(function (sum, acc) {
   return sum + acc.movements.filter(mov => mov > 1000).length;
 }, 0);
 console.log(depositsOver1000Reduce);
+
+// 3. Destructured object containing the sum of deposits and sum of withdrawals
+const { deposits, withdrawals } = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (obj, cur) => {
+      obj[cur > 0 ? 'deposits' : 'withdrawals'] += cur;
+      return obj;
+    },
+    { deposits: 0, withdrawals: 0 }
+  );
+console.log(deposits);
