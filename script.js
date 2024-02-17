@@ -101,7 +101,7 @@ function displayMovements(account, sort = false) {
       <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-      <div class="movements__value">${mov}€</div>
+      <div class="movements__value">${mov.toFixed(2)}€</div>
     </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
@@ -122,19 +122,19 @@ const calcDisplayBalance = function (account) {
     return acc + curr;
   }, 0);
   account.balance = balance;
-  labelBalance.textContent = `${balance}€`;
+  labelBalance.textContent = `${balance.toFixed(2)}€`;
 };
 const calcDisplaySummary = function (account) {
   const income = account.movements
     .filter(mov => mov > 0)
     .reduce((acc, curr) => acc + curr, 0);
   console.log(income);
-  labelSumIn.textContent = income + '€';
+  labelSumIn.textContent = income.toFixed(2) + '€';
 
   const spending = account.movements
     .filter(mov => mov < 0)
     .reduce((acc, curr) => acc + Math.abs(curr), 0);
-  labelSumOut.textContent = spending + '€';
+  labelSumOut.textContent = spending.toFixed(2) + '€';
 
   //Interest receives some percent of every deposit depending on the account
   const interest = account.movements
@@ -142,7 +142,7 @@ const calcDisplaySummary = function (account) {
     .map(deposit => deposit * (account.interestRate / 100))
     .filter(interest => interest >= 1)
     .reduce((totalInterest, interest) => totalInterest + interest, 0);
-  labelSumInterest.textContent = interest + '€';
+  labelSumInterest.textContent = interest.toFixed(2) + '€';
 };
 
 let currentAccount;
