@@ -243,11 +243,5 @@ const overallBalance = accounts
   .flatMap(acc => acc.movements)
   .reduce((acc, val) => acc + val, 0);
 
-const movsAscend = movements.sort((curr, next) => {
-  if (curr > next) {
-    return 1;
-  } else {
-    return -1;
-  }
-});
+const movsAscend = movements.sort((curr, next) => curr - next);
 console.log(movsAscend);
