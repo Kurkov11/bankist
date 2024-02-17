@@ -231,7 +231,7 @@ btnClose.addEventListener('click', e => {
 });
 btnLoan.addEventListener('click', e => {
   e.preventDefault();
-  const amount = Number(inputLoanAmount.value);
+  const amount = Math.floor(inputLoanAmount.value);
   if (
     amount > 0 &&
     currentAccount.movements.some(deposit => deposit >= 0.1 * amount)
@@ -383,3 +383,12 @@ const dogsRecomSorted = dogs.slice().sort((cur, next) => {
   return cur.recommendedFood - next.recommendedFood;
 });
 console.log(dogsRecomSorted);
+
+console.log(Math.max(10, Number.parseInt('15px')));
+
+const numBetween = function (min, max) {
+  let num = Math.trunc(Math.random() * (max - min) + min) + 1;
+  return num;
+};
+console.log(numBetween(5, 10));
+console.log(Math.round('15.5'));
