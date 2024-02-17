@@ -252,3 +252,8 @@ btnLoan.addEventListener('click', e => {
 //   currentAccount = searchedAccount;
 // }
 // console.log(searchedAccount);
+const deposit = function (mov) {
+  return mov > 0;
+};
+console.log(movements.some(deposit));
+console.log(movements.every(deposit));
