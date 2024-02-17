@@ -254,3 +254,8 @@ btnSort.addEventListener('click', function () {
   sort = !sort;
   displayMovements(currentAccount, sort);
 });
+
+const depositSum = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((acc, dep) => acc + dep);
