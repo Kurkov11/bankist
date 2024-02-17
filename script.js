@@ -255,7 +255,25 @@ btnSort.addEventListener('click', function () {
   displayMovements(currentAccount, sort);
 });
 
+// Exercises
+
+//Log the deposits
+console.log(accounts.flatMap(acc => acc.movements).filter(mov => mov > 0));
+
+// 1.
 const depositSum = accounts
   .flatMap(acc => acc.movements)
   .filter(mov => mov > 0)
-  .reduce((acc, dep) => acc + dep);
+  .reduce((sum, dep) => sum + dep);
+
+// 2.1
+const depositsOver1000 = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 1000).length;
+console.log(depositsOver1000);
+
+//2.2
+const depositsOver1000Reduce = accounts.reduce(function (sum, acc) {
+  return sum + acc.movements.filter(mov => mov > 1000).length;
+}, 0);
+console.log(depositsOver1000Reduce);
