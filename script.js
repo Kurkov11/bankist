@@ -30,6 +30,16 @@ const account1 = {
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
+  movementDates: [
+    '01 Jan 1945 00:00:00 GMT',
+    '05 Jan 1945 00:00:00 GMT',
+    '10 Jan 1970 00:00:00 GMT',
+    '30 Jan 1970 00:00:00 GMT',
+    '12 Feb 1970 00:00:00 GMT',
+    '01 Mar 1970 05:03:00 GMT',
+    '03 Mar 1970 00:00:00 GMT',
+    '14 Mar 1970 00:00:00 GMT',
+  ],
 };
 
 const account2 = {
@@ -37,6 +47,16 @@ const account2 = {
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
+  movementDates: [
+    '02 Jan 1945 00:00:00 GMT',
+    '05 Jan 1945 00:00:00 GMT',
+    '10 Jan 1970 00:00:00 GMT',
+    '30 Jan 1970 00:00:00 GMT',
+    '12 Feb 1970 00:00:00 GMT',
+    '01 Mar 1970 05:03:00 GMT',
+    '03 Mar 1970 00:00:00 GMT',
+    '14 Mar 1970 00:00:00 GMT',
+  ],
 };
 
 const account3 = {
@@ -44,6 +64,16 @@ const account3 = {
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
+  movementDates: [
+    '03 Jan 1945 00:00:00 GMT',
+    '05 Jan 1945 00:00:00 GMT',
+    '10 Jan 1970 00:00:00 GMT',
+    '30 Jan 1970 00:00:00 GMT',
+    '12 Feb 1970 00:00:00 GMT',
+    '01 Mar 1970 05:03:00 GMT',
+    '03 Mar 1970 00:00:00 GMT',
+    '14 Mar 1970 00:00:00 GMT',
+  ],
 };
 
 const account4 = {
@@ -51,6 +81,13 @@ const account4 = {
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
+  movementDates: [
+    '04 Jan 1945 00:00:00 GMT',
+    '05 Jan 1945 00:00:00 GMT',
+    '10 Jan 1970 00:00:00 GMT',
+    '30 Jan 1970 00:00:00 GMT',
+    '12 Feb 1970 00:00:00 GMT',
+  ],
 };
 
 const accounts = [account1, account2, account3, account4];
@@ -96,11 +133,17 @@ function displayMovements(account, sort = false) {
 
   containerMovements.innerHTML = '';
   movs.forEach(function (mov, i) {
+    const movDate = new Date(account.movementDates[i]);
+    const movYear = `${movDate.getFullYear()}`;
+    const movMonth = `${movDate.getMonth() + 1}`.padStart(2, '0');
+    const movDay = `${movDate.getDate()}`.padStart(2, '0');
+
     const type = mov >= 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
       <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
+    <div class="movements__date">${movYear}/${movMonth}/${movDay}</div>
       <div class="movements__value">${mov.toFixed(2)}€</div>
     </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -159,6 +202,11 @@ function updateUI(account) {
   //Display welcome message
   labelWelcome.textContent = `Hello ${account.owner.split(' ')[0]}`;
 }
+// FAKED LOGGED IN
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
+
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -254,141 +302,150 @@ btnSort.addEventListener('click', function () {
   sort = !sort;
   displayMovements(currentAccount, sort);
 });
+// Dates
+const now = new Date(); //labelDate
 
+const year = now.getFullYear().toString();
+const month = (now.getMonth() + 1).toString(10).padStart(2, '0');
+const day = now.getDate().toString(10).padStart(2, '0');
+const hour = now.getHours().toString(10).padStart(2, '0');
+const minute = now.getMinutes().toString(10).padStart(2, '0');
+
+labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minute}`;
 // Exercises
 
 //Log the deposits
-console.log(accounts.flatMap(acc => acc.movements).filter(mov => mov > 0));
+// console.log(accounts.flatMap(acc => acc.movements).filter(mov => mov > 0));
 
-// 1.
-const depositSum = accounts
-  .flatMap(acc => acc.movements)
-  .filter(mov => mov > 0)
-  .reduce((sum, dep) => sum + dep);
+// // 1.
+// const depositSum = accounts
+//   .flatMap(acc => acc.movements)
+//   .filter(mov => mov > 0)
+//   .reduce((sum, dep) => sum + dep);
 
-// 2.1
-const depositsOver1000 = accounts
-  .flatMap(acc => acc.movements)
-  .filter(mov => mov > 1000).length;
-console.log(depositsOver1000);
+// // 2.1
+// const depositsOver1000 = accounts
+//   .flatMap(acc => acc.movements)
+//   .filter(mov => mov > 1000).length;
+// console.log(depositsOver1000);
 
-//2.2
-const depositsOver1000Reduce = accounts.reduce(function (sum, acc) {
-  return sum + acc.movements.filter(mov => mov > 1000).length;
-}, 0);
-console.log(depositsOver1000Reduce);
+// //2.2
+// const depositsOver1000Reduce = accounts.reduce(function (sum, acc) {
+//   return sum + acc.movements.filter(mov => mov > 1000).length;
+// }, 0);
+// console.log(depositsOver1000Reduce);
 
-// 3. Destructured object containing the sum of deposits and sum of withdrawals
-const { deposits, withdrawals } = accounts
-  .flatMap(acc => acc.movements)
-  .reduce(
-    (obj, cur) => {
-      obj[cur > 0 ? 'deposits' : 'withdrawals'] += cur;
-      return obj;
-    },
-    { deposits: 0, withdrawals: 0 }
-  );
-console.log(deposits);
+// // 3. Destructured object containing the sum of deposits and sum of withdrawals
+// const { deposits, withdrawals } = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce(
+//     (obj, cur) => {
+//       obj[cur > 0 ? 'deposits' : 'withdrawals'] += cur;
+//       return obj;
+//     },
+//     { deposits: 0, withdrawals: 0 }
+//   );
+// console.log(deposits);
 
-// 4. Capitalise with exceptions
-const convertTitle = function (sentence) {
-  const capitalise = word => word[0].toUpperCase() + word.slice(1);
-  const exceptions = [
-    'a',
-    'an',
-    'and',
-    'as',
-    'at',
-    'but',
-    'by',
-    'for',
-    'in',
-    'nor',
-    'of',
-    'on',
-    'or',
-    'the',
-    'up',
-  ];
-  return capitalise(
-    sentence
-      .split(' ')
-      .map(word =>
-        !exceptions.includes(word.toLowerCase()) ? capitalise(word) : word
-      )
-      .join(' ')
-  );
-};
-console.log(
-  convertTitle("but we don't have any butter in the fridge at home, John")
-);
+// // 4. Capitalise with exceptions
+// const convertTitle = function (sentence) {
+//   const capitalise = word => word[0].toUpperCase() + word.slice(1);
+//   const exceptions = [
+//     'a',
+//     'an',
+//     'and',
+//     'as',
+//     'at',
+//     'but',
+//     'by',
+//     'for',
+//     'in',
+//     'nor',
+//     'of',
+//     'on',
+//     'or',
+//     'the',
+//     'up',
+//   ];
+//   return capitalise(
+//     sentence
+//       .split(' ')
+//       .map(word =>
+//         !exceptions.includes(word.toLowerCase()) ? capitalise(word) : word
+//       )
+//       .join(' ')
+//   );
+// };
+// console.log(
+//   convertTitle("but we don't have any butter in the fridge at home, John")
+// );
 
 //Coding challenge #4
-const dogs = [
-  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
-  { weight: 8, curFood: 200, owners: ['Matilda'] },
-  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
-  { weight: 32, curFood: 340, owners: ['Michael'] },
-];
-// 1.
-dogs.forEach(function (dog) {
-  dog.recommendedFood = Math.trunc(dog.weight ** 0.75 * 28);
-});
-// 2.
-const dogSarah = dogs.find(dog => {
-  return dog.owners.includes('Sarah');
-});
-if (dogSarah.curFood >= dogSarah?.recommendedFood)
-  console.log("Sarah's dog is eating enough");
-// 3.
-const ownersEatTooLittle = dogs
-  .filter(dog => {
-    return dog.curFood < dog.recommendedFood;
-  })
-  .flatMap(starvingDog => starvingDog.owners);
+// const dogs = [
+//   { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+//   { weight: 8, curFood: 200, owners: ['Matilda'] },
+//   { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+//   { weight: 32, curFood: 340, owners: ['Michael'] },
+// ];
+// // 1.
+// dogs.forEach(function (dog) {
+//   dog.recommendedFood = Math.trunc(dog.weight ** 0.75 * 28);
+// });
+// // 2.
+// const dogSarah = dogs.find(dog => {
+//   return dog.owners.includes('Sarah');
+// });
+// if (dogSarah.curFood >= dogSarah?.recommendedFood)
+//   console.log("Sarah's dog is eating enough");
+// // 3.
+// const ownersEatTooLittle = dogs
+//   .filter(dog => {
+//     return dog.curFood < dog.recommendedFood;
+//   })
+//   .flatMap(starvingDog => starvingDog.owners);
 
-const ownersEatTooMuch = dogs
-  .filter(dog => {
-    return dog.curFood > dog.recommendedFood;
-  })
-  .flatMap(overweightDog => overweightDog.owners);
+// const ownersEatTooMuch = dogs
+//   .filter(dog => {
+//     return dog.curFood > dog.recommendedFood;
+//   })
+//   .flatMap(overweightDog => overweightDog.owners);
 
-console.log(ownersEatTooLittle);
-console.log(ownersEatTooMuch);
-// 4.
-const ownersEatTooLittleString =
-  ownersEatTooLittle.join(' and ') + "'s dogs eat too little!";
-const ownersEatTooMuchString =
-  ownersEatTooMuch.join(' and ') + "'s dogs eat too much!";
-console.log(ownersEatTooLittleString);
-console.log(ownersEatTooMuchString);
-// 5.
-console.log(
-  'Are there any dogs eating exactly the recommended amount of food? ' +
-    dogs.some(dog => dog.recommendedFood === dog.curFood)
-);
-const foodAmountOk = function (dog) {
-  return (
-    dog.curFood >= dog.recommendedFood - dog.recommendedFood * 0.9 &&
-    dog.curFood <= dog.recommendedFood * 1.1
-  );
-};
-console.log(
-  'Are there any dogs eating the ok amount of food? ' + dogs.some(foodAmountOk)
-);
-const okEatingDogs = dogs.filter(foodAmountOk);
-console.log(okEatingDogs);
+// console.log(ownersEatTooLittle);
+// console.log(ownersEatTooMuch);
+// // 4.
+// const ownersEatTooLittleString =
+//   ownersEatTooLittle.join(' and ') + "'s dogs eat too little!";
+// const ownersEatTooMuchString =
+//   ownersEatTooMuch.join(' and ') + "'s dogs eat too much!";
+// console.log(ownersEatTooLittleString);
+// console.log(ownersEatTooMuchString);
+// // 5.
+// console.log(
+//   'Are there any dogs eating exactly the recommended amount of food? ' +
+//     dogs.some(dog => dog.recommendedFood === dog.curFood)
+// );
+// const foodAmountOk = function (dog) {
+//   return (
+//     dog.curFood >= dog.recommendedFood - dog.recommendedFood * 0.9 &&
+//     dog.curFood <= dog.recommendedFood * 1.1
+//   );
+// };
+// console.log(
+//   'Are there any dogs eating the ok amount of food? ' + dogs.some(foodAmountOk)
+// );
+// const okEatingDogs = dogs.filter(foodAmountOk);
+// console.log(okEatingDogs);
 
-const dogsRecomSorted = dogs.slice().sort((cur, next) => {
-  return cur.recommendedFood - next.recommendedFood;
-});
-console.log(dogsRecomSorted);
+// const dogsRecomSorted = dogs.slice().sort((cur, next) => {
+//   return cur.recommendedFood - next.recommendedFood;
+// });
+// console.log(dogsRecomSorted);
 
-console.log(Math.max(10, Number.parseInt('15px')));
+// console.log(Math.max(10, Number.parseInt('15px')));
 
-const numBetween = function (min, max) {
-  let num = Math.trunc(Math.random() * (max - min) + min) + 1;
-  return num;
-};
-console.log(numBetween(5, 10));
-console.log(Math.round('15.5'));
+// const numBetween = function (min, max) {
+//   let num = Math.trunc(Math.random() * (max - min) + min) + 1;
+//   return num;
+// };
+// console.log(numBetween(5, 10));
+// console.log(Math.round('15.5'));
