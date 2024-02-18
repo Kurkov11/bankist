@@ -124,14 +124,19 @@ const currencies = new Map([
   ['EUR', 'Euro'],
   ['GBP', 'Pound sterling'],
 ]);
-
+const formatCurrency = function (number, locale, currency) {
+  return Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(number);
+};
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 function registerMovement(account, mov) {
   account.movements.push(mov);
   account.movementDates.push(new Date().toISOString());
   console.log(account.movementDates);
 }
-function formatMovementDate(date) {
+function formatMovementDate(date, locale = navigator.language) {
   function calcDaysPassed(date1, date2) {
     return Math.trunc(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
   }
@@ -141,10 +146,7 @@ function formatMovementDate(date) {
   if (daysPassed === 1) return 'yesterday';
   if (daysPassed <= 5) return `${daysPassed} days ago`;
 
-  const movYear = `${date.getFullYear()}`;
-  const movMonth = `${date.getMonth() + 1}`.padStart(2, '0');
-  const movDay = `${date.getDate()}`.padStart(2, '0');
-  return `${movYear}/${movMonth}/${movDay}`;
+  return new Intl.DateTimeFormat(locale).format(date);
 }
 function displayMovements(account, sort = false) {
   const movs = sort
@@ -161,7 +163,11 @@ function displayMovements(account, sort = false) {
     <div class="movements__date">${formatMovementDate(
       new Date(account.movementDates[i])
     )}</div>
-      <div class="movements__value">${mov.toFixed(2)}€</div>
+      <div class="movements__value">${formatCurrency(
+        mov,
+        navigator.language,
+        'EUR'
+      )}</div>
     </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
@@ -182,19 +188,19 @@ const calcDisplayBalance = function (account) {
     return acc + curr;
   }, 0);
   account.balance = balance;
-  labelBalance.textContent = `${balance.toFixed(2)}€`;
+  labelBalance.textContent = formatCurrency(balance, navigator.language, 'EUR');
 };
 const calcDisplaySummary = function (account) {
   const income = account.movements
     .filter(mov => mov > 0)
     .reduce((acc, curr) => acc + curr, 0);
   console.log(income);
-  labelSumIn.textContent = income.toFixed(2) + '€';
+  labelSumIn.textContent = formatCurrency(income, navigator.language, 'EUR');
 
   const spending = account.movements
     .filter(mov => mov < 0)
     .reduce((acc, curr) => acc + Math.abs(curr), 0);
-  labelSumOut.textContent = spending.toFixed(2) + '€';
+  labelSumOut.textContent = formatCurrency(spending, navigator.language, 'EUR');
 
   //Interest receives some percent of every deposit depending on the account
   const interest = account.movements
@@ -202,7 +208,11 @@ const calcDisplaySummary = function (account) {
     .map(deposit => deposit * (account.interestRate / 100))
     .filter(interest => interest >= 1)
     .reduce((totalInterest, interest) => totalInterest + interest, 0);
-  labelSumInterest.textContent = interest.toFixed(2) + '€';
+  labelSumInterest.textContent = labelSumOut.textContent = formatCurrency(
+    interest,
+    navigator.language,
+    'EUR'
+  );
 };
 
 let currentAccount;
@@ -261,7 +271,6 @@ btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = Number(inputTransferAmount.value);
   const transferTo = inputTransferTo.value;
-  console.log(amount + '€', transferTo);
   const receiverAccount = accounts.find(function (account) {
     return account.username === transferTo;
   });
@@ -329,7 +338,6 @@ btnSort.addEventListener('click', function () {
   sort = !sort;
   displayMovements(currentAccount, sort);
 });
-
 // Exercises
 
 //Log the deposits
@@ -467,3 +475,13 @@ btnSort.addEventListener('click', function () {
 // };
 // console.log(numBetween(5, 10));
 // console.log(Math.round('15.5'));
+setTimeout(function () {
+  console.log('Hey look! Somebody is running maan!');
+  setTimeout(
+    () =>
+      console.log(
+        'Hehyhyahyhhyoooo...... I am sorry for being late, a dog ate my execution time.'
+      ),
+    10000
+  );
+}, 3000);
