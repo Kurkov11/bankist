@@ -226,6 +226,14 @@ containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
+  //Display date based on location
+  const now = new Date(); //labelDate
+
+  labelDate.textContent = Intl.DateTimeFormat(navigator.language, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(now);
 
   //Lose input focus - even when data was incorrect
   inputLoginUsername.blur();
@@ -321,16 +329,7 @@ btnSort.addEventListener('click', function () {
   sort = !sort;
   displayMovements(currentAccount, sort);
 });
-// Dates
-const now = new Date(); //labelDate
 
-const year = now.getFullYear().toString();
-const month = (now.getMonth() + 1).toString(10).padStart(2, '0');
-const day = now.getDate().toString(10).padStart(2, '0');
-const hour = now.getHours().toString(10).padStart(2, '0');
-const minute = now.getMinutes().toString(10).padStart(2, '0');
-
-labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minute}`;
 // Exercises
 
 //Log the deposits
