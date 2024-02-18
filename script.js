@@ -35,10 +35,10 @@ const account1 = {
     '05 Jan 1945 00:00:00 GMT',
     '10 Jan 1970 00:00:00 GMT',
     '30 Jan 1970 00:00:00 GMT',
-    '12 Feb 1970 00:00:00 GMT',
-    '01 Mar 1970 05:03:00 GMT',
-    '03 Mar 1970 00:00:00 GMT',
-    '14 Mar 1970 00:00:00 GMT',
+    '15 Feb 2024 05:30:00 GMT',
+    '16 Feb 2024 04:34:12 GMT',
+    '17 Feb 2024 00:00:00 GMT',
+    '18 Feb 2024 03:01:03 GMT',
   ],
 };
 
@@ -58,6 +58,7 @@ const account2 = {
     '14 Mar 1970 00:00:00 GMT',
   ],
 };
+//Connect each movement with it's date using map
 
 const account3 = {
   owner: 'Steven Thomas Williams',
@@ -125,7 +126,26 @@ const currencies = new Map([
 ]);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+function registerMovement(account, mov) {
+  account.movements.push(mov);
+  account.movementDates.push(new Date().toISOString());
+  console.log(account.movementDates);
+}
+function formatMovementDate(date) {
+  function calcDaysPassed(date1, date2) {
+    return Math.trunc(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+  }
+  const daysPassed = calcDaysPassed(date, new Date());
 
+  if (daysPassed === 0) return 'today';
+  if (daysPassed === 1) return 'yesterday';
+  if (daysPassed <= 5) return `${daysPassed} days ago`;
+
+  const movYear = `${date.getFullYear()}`;
+  const movMonth = `${date.getMonth() + 1}`.padStart(2, '0');
+  const movDay = `${date.getDate()}`.padStart(2, '0');
+  return `${movYear}/${movMonth}/${movDay}`;
+}
 function displayMovements(account, sort = false) {
   const movs = sort
     ? account.movements.slice().sort((mov, next) => mov - next)
@@ -133,17 +153,14 @@ function displayMovements(account, sort = false) {
 
   containerMovements.innerHTML = '';
   movs.forEach(function (mov, i) {
-    const movDate = new Date(account.movementDates[i]);
-    const movYear = `${movDate.getFullYear()}`;
-    const movMonth = `${movDate.getMonth() + 1}`.padStart(2, '0');
-    const movDay = `${movDate.getDate()}`.padStart(2, '0');
-
     const type = mov >= 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
       <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-    <div class="movements__date">${movYear}/${movMonth}/${movDay}</div>
+    <div class="movements__date">${formatMovementDate(
+      new Date(account.movementDates[i])
+    )}</div>
       <div class="movements__value">${mov.toFixed(2)}€</div>
     </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -248,8 +265,9 @@ btnTransfer.addEventListener('click', function (e) {
     amount > 0 &&
     currentAccount.balance >= amount
   ) {
-    receiverAccount.movements.push(amount);
-    currentAccount.movements.push(-1 * amount);
+    registerMovement(receiverAccount, amount);
+
+    registerMovement(currentAccount, -1 * amount);
 
     updateUI(currentAccount);
 
@@ -285,6 +303,7 @@ btnLoan.addEventListener('click', e => {
     currentAccount.movements.some(deposit => deposit >= 0.1 * amount)
   ) {
     currentAccount.movements.push(amount);
+    currentAccount.movementDates.push(new Date());
     updateUI(currentAccount);
     inputLoanAmount.value = '';
   }
