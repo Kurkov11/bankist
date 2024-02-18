@@ -131,6 +131,13 @@ const formatCurrency = function (number, locale, currency) {
   }).format(number);
 };
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+function hideUI() {
+  containerApp.style.opacity = 0;
+  labelWelcome.textContent = 'Log in to get started';
+}
+/////////////////
+//Functions END
 function registerMovement(account, mov) {
   account.movements.push(mov);
   account.movementDates.push(new Date().toISOString());
@@ -229,6 +236,33 @@ function updateUI(account) {
   //Display welcome message
   labelWelcome.textContent = `Hello ${account.owner.split(' ')[0]}`;
 }
+let counter; //Defined here to be accessed later
+
+const startTimer = time => {
+  let minutes = Math.trunc(time / 60);
+  labelTimer.textContent = `${minutes.toString().padStart(2, '0')}:${(time % 60)
+    .toString()
+    .padStart(2, '0')}`;
+  counter = setInterval(() => {
+    // m1 time61 t01:01 // m1 time60 01:00 //m00:59
+    time -= 1;
+    console.log(time);
+    if (time === 0) {
+      hideUI();
+      clearInterval(counter);
+    }
+    minutes = Math.trunc(time / 60);
+    labelTimer.textContent = `${minutes.toString().padStart(2, '0')}:${(
+      time -
+      minutes * 60
+    )
+      .toString()
+      .padStart(2, '0')}`;
+  }, 1000);
+};
+//Functions
+/////////////////
+
 // FAKED LOGGED IN
 currentAccount = account1;
 updateUI(currentAccount);
@@ -254,6 +288,11 @@ btnLogin.addEventListener('click', function (e) {
     return account.username === inputLoginUsername.value;
   });
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    //If any timer was running clear it
+    clearInterval(counter);
+
+    //Start timer
+    startTimer(10);
     //Display UI and message
     labelWelcome.textContent = `Hello ${currentAccount.owner.split(' ')[0]}`;
     containerApp.style.opacity = 100;
@@ -309,8 +348,7 @@ btnClose.addEventListener('click', e => {
           accounts.findIndex(user => user === closedUser),
           1
         );
-      containerApp.style.opacity = 0;
-      labelWelcome.textContent = 'Log in to get started';
+      hideUI();
     }, 2500);
   }
 });
@@ -481,12 +519,12 @@ btnSort.addEventListener('click', function () {
 // console.log(Math.round('15.5'));
 
 //Clock
-setInterval(() => {
-  console.log(
-    Intl.DateTimeFormat(navigator.language, {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-    }).format(new Date())
-  );
-}, 1000);
+// setInterval(() => {
+//   console.log(
+//     Intl.DateTimeFormat(navigator.language, {
+//       hour: 'numeric',
+//       minute: 'numeric',
+//       second: 'numeric',
+//     }).format(new Date())
+//   );
+// }, 1000);
