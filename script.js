@@ -479,3 +479,14 @@ btnSort.addEventListener('click', function () {
 // };
 // console.log(numBetween(5, 10));
 // console.log(Math.round('15.5'));
+
+//Clock
+setInterval(() => {
+  console.log(
+    Intl.DateTimeFormat(navigator.language, {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    }).format(new Date())
+  );
+}, 1000);
