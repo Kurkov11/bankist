@@ -303,13 +303,15 @@ btnClose.addEventListener('click', e => {
   });
   if (closedUser) {
     inputCloseUsername.value = inputClosePin.value = '';
-    closedUser &&
-      accounts.splice(
-        accounts.findIndex(user => user === closedUser),
-        1
-      );
-    containerApp.style.opacity = 0;
-    labelWelcome.textContent = 'Log in to get started';
+    setTimeout(() => {
+      closedUser &&
+        accounts.splice(
+          accounts.findIndex(user => user === closedUser),
+          1
+        );
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = 'Log in to get started';
+    }, 2500);
   }
 });
 btnLoan.addEventListener('click', e => {
@@ -319,10 +321,12 @@ btnLoan.addEventListener('click', e => {
     amount > 0 &&
     currentAccount.movements.some(deposit => deposit >= 0.1 * amount)
   ) {
-    currentAccount.movements.push(amount);
-    currentAccount.movementDates.push(new Date());
-    updateUI(currentAccount);
     inputLoanAmount.value = '';
+    setTimeout(() => {
+      currentAccount.movements.push(amount);
+      currentAccount.movementDates.push(new Date());
+      updateUI(currentAccount);
+    }, 2500);
   }
 });
 
@@ -475,13 +479,3 @@ btnSort.addEventListener('click', function () {
 // };
 // console.log(numBetween(5, 10));
 // console.log(Math.round('15.5'));
-setTimeout(function () {
-  console.log('Hey look! Somebody is running maan!');
-  setTimeout(
-    () =>
-      console.log(
-        'Hehyhyahyhhyoooo...... I am sorry for being late, a dog ate my execution time.'
-      ),
-    10000
-  );
-}, 3000);
