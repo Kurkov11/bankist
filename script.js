@@ -222,7 +222,7 @@ const calcDisplaySummary = function (account) {
   );
 };
 
-let currentAccount;
+let currentAccount, counter;
 function updateUI(account) {
   //Display movement
   displayMovements(account);
@@ -236,8 +236,7 @@ function updateUI(account) {
   //Display welcome message
   labelWelcome.textContent = `Hello ${account.owner.split(' ')[0]}`;
 }
-let counter; //Defined here to be accessed later
-
+const timerTime = 20;
 const startTimer = time => {
   let minutes = Math.trunc(time / 60);
   labelTimer.textContent = `${minutes.toString().padStart(2, '0')}:${(time % 60)
@@ -259,14 +258,15 @@ const startTimer = time => {
       .toString()
       .padStart(2, '0')}`;
   }, 1000);
+  return counter;
 };
 //Functions
 /////////////////
 
 // FAKED LOGGED IN
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
@@ -283,16 +283,18 @@ btnLogin.addEventListener('click', function (e) {
   inputLoginUsername.blur();
   inputLoginPin.blur();
 
-  currentAccount = accounts.find(account => {
-    // account.username === inputLoginUsername.value &&
-    return account.username === inputLoginUsername.value;
-  });
+  currentAccount =
+    accounts.find(account => {
+      // account.username === inputLoginUsername.value &&
+      return account.username === inputLoginUsername.value;
+    }) ?? currentAccount;
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
-    //If any timer was running clear it
-    clearInterval(counter);
-
+    //Clear timer if it was runnning
+    if (counter) {
+      clearInterval(counter);
+    }
     //Start timer
-    startTimer(10);
+    counter = startTimer(timerTime);
     //Display UI and message
     labelWelcome.textContent = `Hello ${currentAccount.owner.split(' ')[0]}`;
     containerApp.style.opacity = 100;
@@ -308,6 +310,12 @@ btnLogin.addEventListener('click', function (e) {
 
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
+
+  //Reset timer
+  if (counter) {
+    clearInterval(counter);
+  }
+  counter = startTimer(timerTime);
   const amount = Number(inputTransferAmount.value);
   const transferTo = inputTransferTo.value;
   const receiverAccount = accounts.find(function (account) {
@@ -341,6 +349,8 @@ btnClose.addEventListener('click', e => {
     );
   });
   if (closedUser) {
+    console.log(closedUser);
+    currentAccount = undefined;
     inputCloseUsername.value = inputClosePin.value = '';
     setTimeout(() => {
       closedUser &&
@@ -354,6 +364,10 @@ btnClose.addEventListener('click', e => {
 });
 btnLoan.addEventListener('click', e => {
   e.preventDefault();
+
+  // Restart timer
+  if (counter) clearInterval(counter);
+  startTimer(timerTime);
   const amount = Math.floor(inputLoanAmount.value);
   if (
     amount > 0 &&
